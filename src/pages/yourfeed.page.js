@@ -1,16 +1,12 @@
-
-export class Yourfeelpage   
+export class YourfeedPage {
+    constructor (page)
     {
-constructor(page)
-    {
-    this.page = page;
+        this.page = page;
 
-    this.prfileName = page.getByRole('navigation');
+        this.profileName = page.getByRole('navigation');
 
-}
-
-async getProfileName(){
-    return this.prfileName;
-}
-
+    }
+     getProfileName() {
+        return this.profileName; // возвращаем локатор, без магии
+    } 
 }
