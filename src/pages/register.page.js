@@ -18,12 +18,14 @@ async rignup (user) {
     const {email, password, username } = user;
 
     await this.nameInput.click();
-      await this.nameInput.fill(username);
-      await this.emailInput.click();
-      await this.emailInput.fill(email);
-        await this.passwordInput.click();
-      await this.passwordInput.fill(password);
-      await this.signUpButton.click();
+    await this.nameInput.fill(username);
+    await this.emailInput.click();
+    await this.emailInput.fill(email);
+    await this.passwordInput.click();
+    await this.passwordInput.fill(password);
+    await this.signUpButton.click();
+    
+    await this.page.waitForURL('https://realworld.qa.guru/#/');
 }
 
 async gotoRegistrer(){
