@@ -5,6 +5,7 @@ import { MainPage}  from '../src/pages/main.page';
 import { RegisterPage } from '../src/pages/register.page';
 import  {YourfeedPage} from '../src/pages/yourfeed.page';
 import { ArticlePage } from '../src/pages/article.page';
+import { NewArticlePage } from '../src/pages/newarticle.page';
 import { LoginPage } from '../src/pages/login.page';
 import { FeedPage } from '../src/pages/feed.page';
 
@@ -54,21 +55,22 @@ test('Создание новой статьи', async ({ page }) => {
     const main = new MainPage(page);
     const register = new RegisterPage(page);
     const yourfeed = new YourfeedPage(page);
-    const articlePage = new ArticlePage(page);
+    const newArticlePage = new NewArticlePage(page);
 
     await main.open();
     await main.gotoRegistrer();
     await register.rignup(user);
     await expect(yourfeed.getProfileName()).toContainText(user.username);
 
-    await articlePage.newArticle(article);
-    await expect(articlePage.getArticleTitle()).toBeVisible();
+    await newArticlePage.newArticle(article);
+    await expect(newArticlePage.getArticleTitle()).toBeVisible();
 });
 
 test('Редактирование статьи', async ({ page }) => {
     const main = new MainPage(page);
     const register = new RegisterPage(page);
     const yourfeed = new YourfeedPage(page);
+    const newArticlePage = new NewArticlePage(page);
     const articlePage = new ArticlePage(page);
 
     await main.open();
@@ -76,8 +78,8 @@ test('Редактирование статьи', async ({ page }) => {
     await register.rignup(user);
     await expect(yourfeed.getProfileName()).toContainText(user.username);
 
-    await articlePage.newArticle(article);
-    await expect(articlePage.getArticleTitle()).toBeVisible();
+    await newArticlePage.newArticle(article);
+    await expect(newArticlePage.getArticleTitle()).toBeVisible();
 
     await articlePage.editArticle(editedArticle);
     await expect(articlePage.getArticleTitle()).toBeVisible();
@@ -87,6 +89,7 @@ test('Удаление статьи', async ({ page }) => {
     const main = new MainPage(page);
     const register = new RegisterPage(page);
     const yourfeed = new YourfeedPage(page);
+    const newArticlePage = new NewArticlePage(page);
     const articlePage = new ArticlePage(page);
 
     await main.open();
@@ -94,8 +97,8 @@ test('Удаление статьи', async ({ page }) => {
     await register.rignup(user);
     await expect(yourfeed.getProfileName()).toContainText(user.username);
 
-    await articlePage.newArticle(article);
-    await expect(articlePage.getArticleTitle()).toBeVisible();
+    await newArticlePage.newArticle(article);
+    await expect(newArticlePage.getArticleTitle()).toBeVisible();
 
     await articlePage.deleteArticle();
     await expect(page).toHaveURL(articlePage.getMainPageURL());
@@ -103,10 +106,20 @@ test('Удаление статьи', async ({ page }) => {
 
 test('Лайк другим статьям', async ({ page }) => {
     const main = new MainPage(page);
+    const register = new RegisterPage(page);
+    const yourfeed = new YourfeedPage(page);
+    const newArticlePage = new NewArticlePage(page);
     const login = new LoginPage(page);
     const feed = new FeedPage(page);
 
+    // Регистрируемся и создаем статью
     await main.open();
+    await main.gotoRegistrer();
+    await register.rignup(user);
+    await expect(yourfeed.getProfileName()).toContainText(user.username);
+    await newArticlePage.newArticle(article);
+
+    // Логинимся другим пользователем и ставим лайк
     await login.goToLogin();
     await login.login(loginCredentials.email, loginCredentials.password);
     await feed.goToGlobalFeed();
@@ -125,7 +138,7 @@ test('Авторизация ранее зарегистрированным п�
     await expect(login.getProfileName(loginCredentials.username)).toBeVisible();
 });
 
-test('Открытие страницы Settings авторизованным пользователем', async ({ page }) => {
+test('Изменение username в Settings', async ({ page }) => {
     const main = new MainPage(page);
     const login = new LoginPage(page);
 
@@ -133,6 +146,7 @@ test('Открытие страницы Settings авторизованным п
     await login.goToLogin();
     await login.login(loginCredentials.email, loginCredentials.password);
     await login.goToSettings(loginCredentials.username);
+    await login.updateUsername(faker.person.firstName());
     await expect(login.getSettingsEmail()).toBeVisible();
 });
 

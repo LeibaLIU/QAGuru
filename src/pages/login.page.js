@@ -45,6 +45,15 @@ export class LoginPage {
         await this.page.waitForURL('https://realworld.qa.guru/#/settings');
     }
 
+    async updateUsername(newUsername) {
+        const usernameInput = this.page.getByRole('textbox', { name: 'Your Name' });
+        await usernameInput.click();
+        await usernameInput.fill(newUsername);
+        await this.updateSettingsButton.click();
+
+        await this.page.waitForURL('https://realworld.qa.guru/#/settings');
+    }
+
     getProfileName(username) {
         return this.page.getByRole('heading', { name: username });
     }
