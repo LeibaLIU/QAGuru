@@ -14,7 +14,7 @@ export class RegisterPage
 
 }
 
-async rignup (user) {
+async signup(user) {
     const {email, password, username } = user;
 
     await this.nameInput.click();
@@ -26,8 +26,6 @@ async rignup (user) {
       await this.signUpButton.click();
 }
 
-async gotoRegistrer(){
-    await this.signUpLink.click();
-}
+
 
 }

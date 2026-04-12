@@ -7,7 +7,7 @@ export class MainPage
     this.page = page;
     this.signUpLink = page.getByRole('link', { name: 'Sign up' });
 }
-async gotoRegistrer(){
+async gotoRegister(){
     await this.signUpLink.click();
 }
 async open() 
